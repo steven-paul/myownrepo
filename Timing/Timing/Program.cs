@@ -10,29 +10,34 @@ namespace Timing
     {
         static void Main(string[] args)
         {
+            Console.CursorVisible = false;
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.Clear();
             char x = ' ';
-            while (x != 'Q')
+            while (x != 'Q' && x != 'q')
             {
+                Console.SetCursorPosition(0, 0);
                 if (Console.KeyAvailable)
                 {
                     x = Console.ReadKey(true).KeyChar;
                 }
                 DateTime now = DateTime.Now;
-                WriteTime (now.Hour,":");
+                WriteTime(now.Month, "/");
+                WriteTime(now.Day, "/");
+                WriteTime(now.Year, "  ");
+                WriteTime(now.Hour, ":");
                 WriteTime(now.Minute, ":");
                 WriteTime(now.Second, "");
-                Console.WriteLine();
-                
             }
             //end of main method
         }
         private static void WriteTime(int number, string spacer)
         {
-            if (number<10)
+            if (number < 10)
             { Console.Write("0"); }
-            Console.Write(number+spacer);
+            Console.Write(number + spacer);
         }
 
-      
+
     }
 }
