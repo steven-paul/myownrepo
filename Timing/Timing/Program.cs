@@ -14,9 +14,10 @@ namespace Timing
             Console.ForegroundColor = ConsoleColor.White;
             Console.Clear();
             string exit = "";
+            List<AlarmTime> alarm = new List<AlarmTime>();
             while (exit != "Q")
             {
-                List<AlarmTime> alarm = new List<AlarmTime>();
+              
                 Console.SetCursorPosition(0, 0);
                 if (Console.KeyAvailable)
                 {
@@ -64,28 +65,77 @@ namespace Timing
                             Console.Clear();
                             leaveMenu = true;
                             break;
+                        default:
+                            MessagePrint("fuck off");
+                            break;
+                    }
+                }
+                else
+                {
+                    Console.Clear();
+                    Console.WriteLine("A - Add Alarm\nE - Exit");
+                    while (!Console.KeyAvailable)
+                    {
+
+                    }
+                    menuChoice = InterpretKey();
+                    switch (menuChoice)
+                    {
+                        case "A":
+                            // add new alarm
+                            alarm = AddAlarm(alarm);
+                            break;
+                        case "E":
+                            //exit from edit alarm menu
+                            Console.Clear();
+                            leaveMenu = true;
+                            break;
+                        default:
+                            MessagePrint("fuck off");
+                            break;
                     }
                 }
             }
             return alarm;
         }
-        public static List<AlarmTime> AddAlarm(List<AlarmTime> alarm)
+
+        private static void MessagePrint(string p)
         {
+            Console.WriteLine(p+"\n<ENTER> to continue");
+            Console.ReadLine();
+        }
+        public static List<AlarmTime> AddAlarm(List<AlarmTime> alarm)
+        {   
             int hour = -1, minute = -1;
             while (hour < 0 || hour > 23)
                 hour = NumberPrompt("Hour ");
             while (minute < 0 || minute > 59)
                 minute = NumberPrompt("Minute ");
-            return alarm;
+            
+            DateTime temp = DateTime.Now;
             DateTime now = DateTime.Now;
-            if (now.Hour > hour) 
+            if (now.Hour > hour || (now.Hour == hour && now.Minute+5>minute))
             {
-                now.AddDays(1);
+                temp = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day+1, hour, minute, 0);
             }
-            else if (now.Hour==hour && now.Minute > minute)
+            else
             {
-                now.AddDays(1);
+                temp = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, hour, minute, 0);
             }
+            string message = Prompt("Message for alarm?");
+            alarm.Add(new AlarmTime { alarms = temp, message=message });
+            return alarm;
+        }
+
+        private static string Prompt(string p)
+        {
+            string ans = "";
+            while (ans =="")
+            {
+                Console.WriteLine(p);
+                ans = Console.ReadLine();
+            } 
+            return ans;
         }
         public static int NumberPrompt(string p)
         {

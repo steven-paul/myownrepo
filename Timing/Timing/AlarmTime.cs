@@ -7,8 +7,7 @@ namespace Timing
 {
     public class AlarmTime
     {
-        public int hour { get; set; }
-        public int minute { get; set; }
+        public DateTime alarms { get; set; }
         public string message { get; set; }
     }
 }
